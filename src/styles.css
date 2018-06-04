@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+.navbar-nav.nav li.active a {
+  background: none !important;
+  font-weight: bold;
+  background-image: none !important;
+}
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  color: #fff;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  right: 20px;
+  top: 5%;
+}
+#toast.green {
+  background-color: green;
+}
+#toast.red {
+  background-color: red;
+}
+#toast.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s;
+  animation: fadein 0.5s;
+}
+.pointer {
+  cursor: pointer;
+}
+.pointer:hover {
+  background: #eeeeee;
+}
+.container {
+  margin-bottom: 30px;
+}
+div, input, textarea {
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  border-radius: 3px !important;
+}
+.glyphicon {
+  color: #ff4081;
+}
+.modal.in .order-modal {
+  width: 90% !important;
+}
+
+table td:first-child, table th:first-child {
+  min-width: 80px;
+}
+table td, table th {
+  min-width: 170px;
+}

@@ -1,0 +1,12 @@
+.category-footer {
+  position: absolute;
+  top: 0;
+  right: 16px;
+}
+.panel-body:hover .category-footer {
+  display: block !important;
+}
+._created {
+  font-size: 10px;
+  color: #666;
+}

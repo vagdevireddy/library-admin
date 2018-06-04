@@ -1,0 +1,12 @@
+table tr th:nth-child(3), table tr td:nth-child(3) {
+  min-width: 60px !important;
+}
+table tr td p {
+  margin-bottom: 0;
+}
+table tr td, table tr td p {
+  font-size: 13px;
+}
+textarea {
+  resize: none;
+}

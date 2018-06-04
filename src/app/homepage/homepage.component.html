@@ -1,0 +1,107 @@
+<div class="">
+  <br>
+  <div class="row">
+    <div class="col-lg-3">
+      <label>Search for</label>
+      <input type="text" (keyup)="searchBooks(filter.search, $event)"
+             class="form-control" [(ngModel)]="filter.search" placeholder="Search records from Database">
+    </div>
+    <div class="col-lg-3 col-md-3">
+      <label>Sort by</label>
+      <select name="sort" id="sort" class="form-control" [(ngModel)]="query['sort']" (change)="changeParams(query)">
+        <option value="-_updated">Updated on</option>
+        <option value="book_title">Book Title</option>
+        <option value="-_created">Created on</option>
+        <option value="publisher">Publisher</option>
+        <option value="language">Language</option>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-2">
+      <label for="max_results">Results per page</label>
+      <select name="max_results" id="max_results" class="form-control"
+              [(ngModel)]="query.max_results" (change)="changeParams(query)">
+        <option value="15">15</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="150">150</option>
+      </select>
+    </div>
+  </div>
+  <br>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Action</th>
+        <th>Book title</th>
+        <th>Authors</th>
+        <th>availability</th>
+        <th>E - Book</th>
+        <th>Hard copy Price</th>
+        <th>E - Copy Price</th>
+        <th>ISBN 13</th>
+        <th>Publisher</th>
+        <th>Language</th>
+        <th>Created on</th>
+        <th>Updated on</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="pointer" *ngFor="let item of books; let index = index;">
+        <td>
+          <button title="Delete {{ item['book_title'] }}" class="btn btn-xs" (click)="openModal(deleteTemplate, item)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </td>
+        <td (click)="cellClicked(item)">{{ item['book_title'] }}</td>
+        <td>{{ item['book_authors'] }}</td>
+        <td>{{ (item['availability']) ? 'Available' : 'Not Available' }}</td>
+        <td>{{ (item['ebook']) ? 'Click to open' : 'Not Available' }}</td>
+        <td>{{ item['hcopy_price'] }}</td>
+        <td>{{ item['ecopy_price'] }}</td>
+        <td>{{ item['ISBN_13'] }}</td>
+        <td>{{ item['publisher'] }} </td>
+        <td>{{ item['language'] }} </td>
+        <td>{{ item['_created'] | date: 'dd/MM/yyyy hh:mm a' }}</td>
+        <td>{{ item['_updated'] | date: 'dd/MM/yyyy hh:mm a' }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <div class="row" *ngIf="_meta">
+    <div class="col-lg-1 col-md-1">
+      <button class="btn btn-xs btn-default text-center" (click)="pagination(_meta['page'] - 1)">
+        <span class="glyphicon glyphicon-backward"></span>
+      </button>&nbsp;
+      <button (click)="pagination(_meta['page'] + 1)" class="btn btn-xs btn-default text-center">
+        <span class="glyphicon glyphicon-forward"></span>
+      </button>
+    </div>
+    <div class="col-lg-2 col-md-2 pull-right text-right">
+      <h6 class="margin-5">Total Records: <b>{{ _meta['total'] }}</b></h6>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #deleteTemplate>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Title : {{ modalItem['book_title'] }}</h5>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-8">
+        <h4>Are you sure you want to Delete?</h4>
+        <h6>Book Title: <b>{{ modalItem['book_title'] }}</b></h6>
+        <br>
+        <button class="btn btn-sm btn-primary" (click)="deleteBook(modalItem)">Delete Anyway</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,84 @@
+<div class="">
+  <br>
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+      <input type="text" placeholder="Search..."
+             [(ngModel)]="search" class="form-control">
+    </div>
+    <div class="col-lg-3">
+      <button class="btn btn-primary btn-sm" (click)="openModal(addTemplate, {})">Add new Category</button>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-lg-3" *ngFor="let item of categories | filter: search: 'category_name'; let index = index;">
+      <div class="panel panel-default" (mouseover)="hoverCategory[item['_id']] = true;"
+           (mouseleave)="hoverCategory[item['_id']] = false;">
+        <div class="panel-body pointer">
+          <h5><b>{{ item.category_name }}</b></h5>
+          <span class="_created">Created: {{ item['_created'] | date: 'yyyy-MM-dd hh:mm a' }}</span>
+        </div>
+        <div class="panel-footer category-footer" *ngIf="hoverCategory[item['_id']]">
+          <button class="btn btn-primary btn-xs" (click)="openModal(template, item)">Update</button>&nbsp;&nbsp;
+          <button class="btn btn-danger btn-xs" (click)="deleteCategory(item, index)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="(categories | filter: search: 'category_name').length === 0">
+    <div class="col-lg-12">
+      <div class="jumbotron text-center">
+        <h2>Sorry!</h2>
+        <h4>No results found your criteria...</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Category : {{ modalItem['category_name'] }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-8">
+        <form (submit)="addCategory(modalItem, false)">
+          <div class="form-group">
+            <input autocomplete="off" type="text" class="form-control" name="category_name" [(ngModel)]="modalItem['category_name']" />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-sm btn-primary">Create</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Category : {{ modalItem['category_name'] }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-8">
+        <form (submit)="updateCategory(modalItem, true)">
+          <div class="form-group">
+            <input autocomplete="off" type="text" class="form-control" name="category_name" [(ngModel)]="modalItem['category_name']" />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

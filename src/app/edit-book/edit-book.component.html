@@ -1,0 +1,125 @@
+<div class="">
+  <h3>Book: {{ bookInfo['book_title'] }}</h3>
+  <hr>
+  <form [formGroup]="bookForm" (submit)="updateBookDetails(bookForm.value)">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label for="title">Book Title</label>
+          <input type="text" id="title" class="form-control" placeholder="Book title"
+                 formControlName="book_title" />
+        </div>
+
+        <div class="form-group">
+          <label for="sub_title">Sub Title</label>
+          <input type="text" id="sub_title" class="form-control" placeholder="Sub title"
+                 formControlName="sub_title" />
+        </div>
+
+        <div class="form-group">
+          <label for="summary">Book Summary</label>
+          <textarea type="text" id="summary" class="form-control" placeholder="Book Summary"
+                    formControlName="book_summary" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="keywords">Book Keywords</label>
+          <textarea type="text" id="keywords" class="form-control" placeholder="Book keywords"
+                    formControlName="book_keywords" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="pages">No.of Pages</label>
+          <input type="text" id="pages" class="form-control" placeholder="No.of Pages"
+                 formControlName="no_of_pages" />
+        </div>
+
+        <div class="form-group">
+          <label for="Author">Authors</label>
+          <input type="text" id="Author" class="form-control" placeholder="Author" formControlName="book_authors" />
+        </div>
+
+        <div class="form-group">
+          <label for="book_author_desc">Book Author Description</label>
+          <textarea formControlName="book_author_desc" id="book_author_desc" rows="2"
+                    placeholder="Book Author Description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="Availability">Availability</label>
+          <select formControlName="availability" id="Availability" class="form-control">
+            <option *ngFor="let av of trueFalseArray" value="{{ av.val }}">{{ av.text }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label for="hcopy_price">Hard copy Price</label>
+          <input type="number" id="hcopy_price" class="form-control"
+                 placeholder="Hard copy Price" formControlName="hcopy_price" />
+        </div>
+        <div class="form-group">
+          <label for="ecopy_price">E-copy Price</label>
+          <input type="number" id="ecopy_price" class="form-control"
+                 placeholder="E-copy Price" formControlName="ecopy_price" />
+        </div>
+
+        <div class="form-group">
+          <label for="book_image">Book Image</label>
+          <input type="file" (change)="fileChangeEvent($event)" #imageUpload id="book_image"
+                 class="form-control" placeholder="Book Image" required />
+        </div>
+
+        <div class="form-group image-preview" *ngIf="imagePreview['src']">
+          <img src="{{ imagePreview.src }}" alt="{{ imagePreview.title }}">
+        </div>
+
+        <div class="form-group">
+          <label for="m_group">Book Category</label>
+          <select name="m_group" id="m_group" formControlName="book_categories" class="form-control">
+            <option *ngFor="let item of categories" value="{{ item._id }}">{{ item.category_name }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="language">Language</label>
+          <select formControlName="language" id="language" class="form-control">
+            <option *ngFor="let av of languages" value="{{ av.val }}">{{ av.text }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="publisher">Publisher</label>
+          <input type="text" id="publisher" class="form-control" placeholder="Publisher" formControlName="publisher" />
+        </div>
+        <div class="form-group">
+          <label for="ISBN">ISBN 10</label>
+          <input type="text" id="ISBN" class="form-control" placeholder="ISBN" formControlName="ISBN_10" />
+        </div>
+        <div class="form-group">
+          <label for="ISBN_13">ISBN 13</label>
+          <input type="text" id="ISBN_13" class="form-control" placeholder="ISBN" formControlName="ISBN_13" />
+        </div>
+
+        <div class="form-group">
+          <label for="published_date">Published date</label>
+          <input type="text" id="published_date" placeholder="Published date" class="form-control" bsDatepicker
+                 formControlName="published_date" />
+        </div>
+
+      </div> <!-- end col -->
+      <div class="col-lg-4">
+        <h5 class="text-uppercase" style="color: orangered;"><b>Do you have E-Book?</b></h5>
+        <div class="form-group">
+          <label for="e-book">E-Book</label>
+          <input type="file" class="form-control" #eBookUpload placeholder="E-book" id="e-book" />
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+    <div class="row">
+      <div class="col-lg-3">
+        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+        <button class="btn-default btn-sm btn" type="reset">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

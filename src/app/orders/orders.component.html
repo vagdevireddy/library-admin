@@ -1,0 +1,181 @@
+<div>
+  <br>
+  <h5><b>Orders from the customers</b></h5>
+  <hr>
+  <div class="row">
+    <div class="col-lg-3 col-md-3">
+      <label>Sort by</label>
+      <select name="sort" id="sort" class="form-control" [(ngModel)]="query['sort']" (change)="changeParams(query)">
+        <option value="-_updated">Updated on</option>
+        <option value="-_created">Created on</option>
+      </select>
+    </div>
+    <div class="col-lg-2 col-md-2">
+      <label for="max_results">Results per page</label>
+      <select name="max_results" id="max_results" class="form-control"
+              [(ngModel)]="query.max_results" (change)="changeParams(query)">
+        <option value="15">15</option>
+        <option value="30">30</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="150">150</option>
+      </select>
+    </div>
+  </div>
+  <hr>
+  <!-- table stands -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Order Id</th>
+          <th>Ordered Books </th>
+          <th>Ordered Date</th>
+          <th>Delivery Date</th>
+          <th>Delivery Status</th>
+          <th>Customer</th>
+          <!--<th>Transaction ID</th>-->
+          <th>Shipping Address</th>
+          <th>Amount Paid</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of orders" class="pointer">
+          <td>
+            <button title="View {{ item['_id'] }}" (click)="openModal(viewTemplate, item)" class="btn btn-xs btn-default">
+              <span class="glyphicon glyphicon-eye-open"></span>
+            </button>
+            <button title="Update {{ item['_id'] }}" (click)="openModal(editTemplate, item)" class="btn btn-xs btn-default">
+              <span class="glyphicon glyphicon-edit"></span>
+            </button>
+          </td>
+          <td>{{ item['_id'] }}</td>
+          <td>{{ item['books'].length }}</td>
+          <td>{{ item['_created'] | date: 'dd/MM/yyyy hh:mm a' }}</td>
+          <td>{{ item['delivery_date'] | date: 'dd/MM/yyyy hh:mm a' }}</td>
+          <td>{{ item['delivery_status'] }}</td>
+          <td>{{ item['user_id']['first_name'] }}, {{ item['user_id']['last_name'] }}</td>
+          <!--<td>{{ item['transaction_id'] }}</td>-->
+          <td *ngIf="item['shipping_address']">
+            <h5><b>{{ item['shipping_address']['name'] }}</b></h5>
+            <p>{{ item['shipping_address']['phone_number'] }}</p>
+            <p>{{ item['shipping_address']['address'] }}</p>
+            <p>{{ item['shipping_address']['city'] }}, {{ item['shipping_address']['state'] }}</p>
+            <p>{{ item['shipping_address']['pin_code'] }}</p>
+          </td>
+          <td>Rs. {{ item['total_amount'] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<ng-template #viewTemplate>
+  <div class="modal-header" *ngIf="modalItem">
+    <h5 class="modal-title pull-left">Order ID : {{ modalItem['_id'] }}</h5>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="modalItem">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+              <td>Order ID</td>
+              <td>{{ modalItem['_id'] }}</td>
+            </tr>
+            <tr *ngIf="modalItem['user_id']">
+              <td>Customer</td>
+              <td>
+                <p>{{ modalItem['user_id']['first_name'] }}, {{ modalItem['user_id']['last_name'] }}</p>
+                <p>Email: {{ modalItem['user_id']['email'] }}, Phone: {{ modalItem['user_id']['mobile_number'] }}</p>
+              </td>
+            </tr>
+            <tr *ngIf="modalItem['books']">
+              <td>
+                Ordered Books <strong>({{ modalItem['books'].length }})</strong>
+              </td>
+              <td>
+                <p *ngFor="let book of modalItem['books']">
+                  <a target="_blank"
+                     href="{{ appUrls.custUrl + 'book_details/' + parseTitle(book.book_title) + '/' + book.ISBN_13}}">
+                    {{ book['book_title'] }}
+                  </a>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>Ordered Date</td>
+              <td>{{ modalItem['_created'] | date: 'dd/MM/yyyy hh:mm a' }}</td>
+            </tr>
+            <tr>
+              <td>Delivery Date</td>
+              <td>{{ modalItem['delivery_date'] | date: 'dd/MM/yyyy hh:mm a' }}</td>
+            </tr>
+            <tr>
+              <td>Delivery Status</td>
+              <td>{{ modalItem['delivery_status'] }}</td>
+            </tr>
+            <tr>
+              <td>Shipping Address</td>
+              <td *ngIf="modalItem['shipping_address']">
+                <h5><b>{{ modalItem['shipping_address']['name'] }}</b></h5>
+                <p>{{ modalItem['shipping_address']['phone_number'] }}</p>
+                <p>{{ modalItem['shipping_address']['address'] }}</p>
+                <p>{{ modalItem['shipping_address']['city'] }}, {{ modalItem['shipping_address']['state'] }}</p>
+                <p>{{ modalItem['shipping_address']['pin_code'] }}</p>
+              </td>
+            </tr>
+            <tr>
+              <td>Amount paid</td>
+              <td><b>Rs. {{ modalItem['total_amount'] }}</b></td>
+            </tr>
+            <tr>
+              <td>Notes</td>
+              <td>{{ modalItem['notes'] }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #editTemplate>
+  <div class="modal-header" *ngIf="modalItem">
+    <h4 class="modal-title pull-left">Order ID : {{ modalItem['_id'] }}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="modalItem">
+    <div class="row">
+      <div class="col-lg-8">
+        <form (submit)="updateOrder(modalItem)" name="update_order">
+          <div class="form-group">
+            <label>Delivery Status</label>
+            <input type="text" class="form-control" placeholder="Delivery status"
+                   name="delivery_status" [(ngModel)]="modalItem['delivery_status']">
+          </div>
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea name="notes" id="notes" rows="4" class="form-control"
+                      [(ngModel)]="modalItem['notes']" placeholder="Notes"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

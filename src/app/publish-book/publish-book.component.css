@@ -1,0 +1,19 @@
+.search-isbn {
+  font-size: 13px;
+  cursor: pointer;
+}
+.image-preview {
+  height: 150px;
+  width: 150px;
+  border: 1px solid #DDDDDD;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+.image-preview img {
+  height: auto;
+  max-height: 100%;
+  width: auto;
+  max-width: 100%;
+}
